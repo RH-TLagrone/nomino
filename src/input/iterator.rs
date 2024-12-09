@@ -4,7 +4,7 @@ use anyhow::Result;
 use regex::Regex;
 use std::fs;
 use std::iter::{IntoIterator, Iterator};
-use std::path::Path;
+use std::path::{Component, Path, MAIN_SEPARATOR_STR};
 use std::vec::IntoIter;
 use walkdir::IntoIter as WalkIter;
 use walkdir::WalkDir;
@@ -35,7 +35,7 @@ impl InputIterator {
         if let Source::Sort(order) = source {
             let mut map = Vec::new();
             let mut inputs = Vec::new();
-            for entry in fs::read_dir(".")?.flatten() {
+            for entry in fs::read_dir(Component::CurDir)?.flatten() {
                 inputs.push(entry.file_name().to_string_lossy().to_string());
             }
             inputs.sort_by(|a, b| {
@@ -65,7 +65,7 @@ impl InputIterator {
                 formatter,
                 re,
                 preserve_extension,
-                iter: WalkDir::new(".")
+                iter: WalkDir::new(Component::CurDir)
                     .min_depth(if depth > max_depth { max_depth } else { depth })
                     .max_depth(max_depth)
                     .into_iter(),
@@ -93,7 +93,7 @@ impl Iterator for InputIterator {
                         continue;
                     };
                     let path = entry.path();
-                    let input = path.strip_prefix("./").unwrap_or(path).to_string_lossy();
+                    let input = path.strip_prefix(Component::CurDir.as_os_str().to_string_lossy().as_ref().to_owned() + MAIN_SEPARATOR_STR).unwrap_or(path).to_string_lossy();
                     let Some(cap) = re.captures(input.as_ref()) else {
                         continue;
                     };
