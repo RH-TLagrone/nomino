@@ -1,10 +1,10 @@
 use assert_cmd::Command;
+use regex::escape;
 use std::fs::create_dir_all;
 use std::fs::read_dir;
 use std::fs::File;
-use std::path::MAIN_SEPARATOR;
+use std::path::MAIN_SEPARATOR_STR;
 
-#[cfg(not(target_os = "windows"))]
 #[test]
 fn test_regex() {
     let dir = tempfile::tempdir().unwrap();
@@ -49,7 +49,6 @@ fn test_regex() {
     dir.close().unwrap();
 }
 
-#[cfg(not(target_os = "windows"))]
 #[test]
 fn test_regex_not_overwrite() {
     let dir = tempfile::tempdir().unwrap();
@@ -94,7 +93,6 @@ fn test_regex_not_overwrite() {
     dir.close().unwrap();
 }
 
-#[cfg(not(target_os = "windows"))]
 #[test]
 fn test_regex_overwrite() {
     let dir = tempfile::tempdir().unwrap();
@@ -140,7 +138,6 @@ fn test_regex_overwrite() {
     dir.close().unwrap();
 }
 
-#[cfg(not(target_os = "windows"))]
 #[test]
 fn test_regex_subdir() {
     let dir = tempfile::tempdir().unwrap();
@@ -171,8 +168,8 @@ fn test_regex_subdir() {
             dir.path().to_str().unwrap(),
             "-k",
             "-r",
-            format!(r"s(\d+){}.*E(\d+).*", MAIN_SEPARATOR).as_str(),
-            format!("{{:2}}{}{{:2}}.mkv", MAIN_SEPARATOR).as_str(),
+            format!(r"s(\d+){}.*E(\d+).*", escape(MAIN_SEPARATOR_STR)).as_str(),
+            format!("{{:2}}{}{{:2}}.mkv", escape(MAIN_SEPARATOR_STR)).as_str(),
         ])
         .unwrap();
 
@@ -200,7 +197,6 @@ fn test_regex_subdir() {
     dir.close().unwrap();
 }
 
-#[cfg(not(target_os = "windows"))]
 #[test]
 fn test_regex_subdir_depth() {
     let dir = tempfile::tempdir().unwrap();
@@ -233,8 +229,8 @@ fn test_regex_subdir_depth() {
             dir.path().to_str().unwrap(),
             "-k",
             "-r",
-            format!(r"s(\d+){}.*E(\d+).*", MAIN_SEPARATOR).as_str(),
-            format!("{{:2}}{}{{:2}}.mkv", MAIN_SEPARATOR).as_str(),
+            format!(r"s(\d+){}.*E(\d+).*", escape(MAIN_SEPARATOR_STR)).as_str(),
+            format!("{{:2}}{}{{:2}}.mkv", escape(MAIN_SEPARATOR_STR)).as_str(),
         ])
         .unwrap();
 
@@ -262,7 +258,6 @@ fn test_regex_subdir_depth() {
     dir.close().unwrap();
 }
 
-#[cfg(not(target_os = "windows"))]
 #[test]
 fn test_regex_subdir_max_depth() {
     let dir = tempfile::tempdir().unwrap();
@@ -297,8 +292,8 @@ fn test_regex_subdir_max_depth() {
             dir.path().to_str().unwrap(),
             "-k",
             "-r",
-            format!(r"s(\d+){}.*E(\d+).*", MAIN_SEPARATOR).as_str(),
-            format!("{{:2}}{}{{:2}}.mkv", MAIN_SEPARATOR).as_str(),
+            format!(r"s(\d+){}.*E(\d+).*", escape(MAIN_SEPARATOR_STR)).as_str(),
+            format!("{{:2}}{}{{:2}}.mkv", escape(MAIN_SEPARATOR_STR)).as_str(),
         ])
         .unwrap();
 
@@ -326,7 +321,6 @@ fn test_regex_subdir_max_depth() {
     dir.close().unwrap();
 }
 
-#[cfg(not(target_os = "windows"))]
 #[test]
 fn test_regex_subdir_not_overwrite() {
     let dir = tempfile::tempdir().unwrap();
@@ -357,8 +351,8 @@ fn test_regex_subdir_not_overwrite() {
             dir.path().to_str().unwrap(),
             "-k",
             "-r",
-            format!(r"s(\d+){}.*E(\d+).*", MAIN_SEPARATOR).as_str(),
-            format!("{{:2}}{}1.mkv", MAIN_SEPARATOR).as_str(),
+            format!(r"s(\d+){}.*E(\d+).*", escape(MAIN_SEPARATOR_STR)).as_str(),
+            format!("{{:2}}{}1.mkv", escape(MAIN_SEPARATOR_STR)).as_str(),
         ])
         .unwrap();
 
@@ -386,7 +380,6 @@ fn test_regex_subdir_not_overwrite() {
     dir.close().unwrap();
 }
 
-#[cfg(not(target_os = "windows"))]
 #[test]
 fn test_regex_subdir_overwrite() {
     let dir = tempfile::tempdir().unwrap();
@@ -418,8 +411,8 @@ fn test_regex_subdir_overwrite() {
             "-k",
             "-w",
             "-r",
-            format!(r"s(\d+){}.*E(\d+).*", MAIN_SEPARATOR).as_str(),
-            format!("{{:2}}{}1.mkv", MAIN_SEPARATOR).as_str(),
+            format!(r"s(\d+){}.*E(\d+).*", escape(MAIN_SEPARATOR_STR)).as_str(),
+            format!("{{:2}}{}1.mkv", escape(MAIN_SEPARATOR_STR)).as_str(),
         ])
         .unwrap();
 
